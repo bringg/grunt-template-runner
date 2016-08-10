@@ -26,6 +26,7 @@ module.exports = function(grunt) {
       gettext: null,
       gettext_suffix: 'mo',
       data: {},
+      with_underscore: true,
       variable: null // Avoid underscore's template to use "with(...)"
     });
     grunt.verbose.writeflags(options, 'Options');
@@ -124,9 +125,9 @@ module.exports = function(grunt) {
                   var srcFile = f.src[i];
                   var filename = f.dest + '/'; 
                   if(options.i18n && lng.length > 0){
-                      filename += getOutputName(srcFile.replace(/^.*[\\\/]/, ''), lng, options.extension);
+                      filename += getOutputName(srcFile.replace(/^.*[\\\/]/, ''), lng, options.extension, options.with_underscore);
                   } else {
-                      filename += getOutputName(srcFile.replace(/^.*[\\\/]/, ''), '', options.extension);
+                      filename += getOutputName(srcFile.replace(/^.*[\\\/]/, ''), '', options.extension, options.with_underscore);
                   }
                   // Write the destination files.
                   grunt.file.write(filename, src[i]);
@@ -135,7 +136,7 @@ module.exports = function(grunt) {
           } else {
             var d = f.dest;
             if(options.i18n && lng.length > 0){
-                d = getOutputName(f.dest, lng, options.extension);
+                d = getOutputName(f.dest, lng, options.extension, options.with_underscore);
             }
             // Write the destination file.
             grunt.file.write(d, src);
@@ -145,20 +146,21 @@ module.exports = function(grunt) {
     });
   });
 
-  var getOutputName = function(n, lng, extension) {
+  var getOutputName = function(n, lng, extension, with_underscore) {
       var name = n;
       var idx = n.lastIndexOf('.');
+      var underscore = with_underscore ? '_' : '';
       if(idx > -1){
         if(extension || typeof extension === "string"){
-            name = n.slice(0, idx) + lng + extension;
+            name = n.slice(0, idx) + underscore + lng + extension;
         } else {
-          name = n.slice(0, idx) + lng + n.slice(idx);
+          name = n.slice(0, idx) + underscore + lng + n.slice(idx);
         }
       } else {
           if(extension || typeof extension === "string"){
-          name = n + lng + extension;
+          name = n + underscore + lng + extension;
         } else {
-          name = n + lng;
+          name = n + underscore + lng;
         }
       }
       return name;
