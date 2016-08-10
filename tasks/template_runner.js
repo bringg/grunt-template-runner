@@ -150,15 +150,15 @@ module.exports = function(grunt) {
       var idx = n.lastIndexOf('.');
       if(idx > -1){
         if(extension || typeof extension === "string"){
-            name = n.slice(0, idx) + '_' + lng + extension;
+            name = n.slice(0, idx) + lng + extension;
         } else {
-          name = n.slice(0, idx) + '_' + lng + n.slice(idx);
+          name = n.slice(0, idx) + lng + n.slice(idx);
         }
       } else {
           if(extension || typeof extension === "string"){
-          name = n + '_' + lng + extension;
+          name = n + lng + extension;
         } else {
-          name = n + '_' + lng;
+          name = n + lng;
         }
       }
       return name;
